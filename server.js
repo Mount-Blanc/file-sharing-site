@@ -7,4 +7,8 @@ app.get('/', (req,res) => {
     res.render('index')
 })
 
+app.post('/upload', (req,res) => {
+
+})
+
 app.listen(3000)
