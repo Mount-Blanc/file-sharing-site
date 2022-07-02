@@ -31,21 +31,26 @@ app.post('/upload', upload.single("file"), async (req,res) => {
     
     res.render('index', {fileLink:`${req.headers.origin}/file/${file.id}` })
 })
+app.route("/file/:id").get(handleDownload).post (handleDownload)
 
-app.get('/file/:id'), (req, res) => {
+async function handleDownload(req, res) {
     const file = await File.findById(req.params.id)
 
-if ( file.password != null) {
-    if(req.body.password == null) {
-        res.render("password")
-        return
+    if ( file.password != null) {
+        if(req.body.password == null) {
+            res.render("password")
+            return
+        }
+    
+        if ( !await bcrypt.compare(req.body.password, file.password)) {
+            res.render('password', {error: true })
+        }
     }
-}
-
-    file.downloadCount++
-    await file.save()
-
-    res.download(file.path, file.originalName)
+    
+        file.downloadCount++
+        await file.save()
+    
+        res.download(file.path, file.originalName)
 }
 
 app.listen(process.env.PORT)
