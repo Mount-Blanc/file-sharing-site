@@ -32,7 +32,12 @@ app.post('/upload', upload.single("file"), async (req,res) => {
 })
 
 app.get('/file/:id'), (req, res) => {
+    const file = await File.findById(req.params.id)
 
+    file.downloadCount++
+    await file.save()
+
+    res.download(file.path, file.originalName)
 }
 
 app.listen(process.env.PORT)
