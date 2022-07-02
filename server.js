@@ -1,6 +1,7 @@
 require("dotenv").config()
 const multer = require('multer')
 const mongoose = require("mongoose")
+const bcrypt = require ("bcrpy")
 
 const express = require('express')
 const app = express()
@@ -15,7 +16,14 @@ app.get('/', (req,res) => {
 })
 
 app.post('/upload', upload.single("file"), (req,res) => {
-    res.send()
+    const fileData = {
+        path: req.file.path,
+        originalName: req.file.originalname
+    }
+
+    if ( req.bpdy.password != null && req.body.password !==) {
+        fileData.password = bcrypt.hash
+    }
 })
 
 app.listen(process.env.PORT)
