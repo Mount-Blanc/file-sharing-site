@@ -27,6 +27,7 @@ app.post('/upload', upload.single("file"), async (req,res) => {
     }
 
     const file = await File.create(fileData)
+    
     res.render('index', {fileLink:`${req.headers.origin}/file/${file.id}` })
 })
 
